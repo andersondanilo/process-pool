@@ -1,11 +1,15 @@
 {
-    "name": "andersondanilo/process-pool",
+    "name": "NinoSkopac/process-pool",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Anderson Danilo",
             "email": "contato@andersondanilo.com"
+        },
+        {
+            "name": "Nino Skopac",
+            "email": "nino@read2me.online"
         }
     ],
     "require": {
