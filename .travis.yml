@@ -3,7 +3,6 @@ language: php
 php:
   - 7.2
   - 7.3
-  - nightly
 
 before_script:
   - composer install --no-interaction --prefer-source --dev
