@@ -10,8 +10,8 @@
     ],
     "require": {
         "php": "^7.0",
-        "symfony/process": "3.0 - 4.0",
-        "symfony/event-dispatcher": "3.0 - 4.0"
+        "symfony/process": "~4.0",
+        "symfony/event-dispatcher": "~4.0"
     },
     "autoload": {
         "psr-4": {
@@ -19,6 +19,6 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "3.0 - 7.0"
+        "phpunit/phpunit": "^8"
     }
 }
