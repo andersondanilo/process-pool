@@ -23,4 +23,4 @@ jobs:
     - run: composer exec phpcs
     - run: composer exec phpstan analyse
     - run: XDEBUG_MODE=coverage composer exec phpunit
-    - run: composer exec coverage-check clover.xml 100
+    - run: vendor/bin/coverage-check clover.xml 100
