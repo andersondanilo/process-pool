@@ -10,9 +10,6 @@ jobs:
       matrix:
         php_version: ['7.4', '8.0']
 
-    env:
-      XDEBUG_MODE: coverage
-
     steps:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -22,4 +19,8 @@ jobs:
         tools: composer
     - uses: actions/checkout@v2
     - run: composer install
-    - run: make ci
+    - run: php -v
+    - run: composer exec phpcs
+    - run: composer exec phpstan analyse
+    - run: XDEBUG_MODE=coverage composer exec phpunit
+    - run: composer exec coverage-check clover.xml 100
