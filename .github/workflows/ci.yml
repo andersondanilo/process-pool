@@ -20,7 +20,4 @@ jobs:
     - uses: actions/checkout@v2
     - run: composer install
     - run: php -v
-    - run: composer exec phpcs
-    - run: composer exec phpstan analyse
-    - run: XDEBUG_MODE=coverage composer exec phpunit
-    - run: vendor/bin/coverage-check clover.xml 100
+    - run: make ci

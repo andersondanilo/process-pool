@@ -3,14 +3,14 @@ default: ci
 ci: ci-phpcs ci-phpstan ci-phpunit ci-check-coverage
 
 ci-phpcs:
-	composer exec phpcs
+	vendor/bin/phpcs
 
 ci-phpstan:
-	composer exec phpstan analyse
+	vendor/bin/phpstan analyse
 
 ci-phpunit:
-	XDEBUG_MODE=coverage composer exec phpunit
+	XDEBUG_MODE=coverage vendor/bin/phpunit
 
 ci-check-coverage:
-	composer exec coverage-check clover.xml 100
+	vendor/bin/coverage-check clover.xml 100
 
