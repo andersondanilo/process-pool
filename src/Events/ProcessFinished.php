@@ -7,26 +7,21 @@ use Symfony\Component\Process\Process;
 
 class ProcessFinished extends ProcessEvent
 {
-    const NAME = 'process_finished';
+    private ?Exception $exception = null;
 
-    private $exception;
+    public function getName(): string
+    {
+        return static::PROCESS_FINISHED;
+    }
 
-    /**
-     * @param Exception $exception
-     *
-     * @return static
-     */
-    public function setException(Exception $exception)
+    public function setException(Exception $exception): self
     {
         $this->exception = $exception;
 
         return $this;
     }
 
-    /**
-     * @return Exception
-     */
-    public function getException()
+    public function getException(): ?Exception
     {
         return $this->exception;
     }

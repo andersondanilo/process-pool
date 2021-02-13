@@ -1,0 +1,8 @@
+parameters:
+	level: 8
+	paths:
+		- src
+
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon

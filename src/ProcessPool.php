@@ -6,6 +6,7 @@ use Iterator;
 use ProcessPool\Events\ProcessEvent;
 use ProcessPool\Events\ProcessFinished;
 use ProcessPool\Events\ProcessStarted;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -16,48 +17,35 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class ProcessPool
 {
-    /**
-     * @var Iterator
-     */
-    private $queue;
+    /** @var Iterator<Process> */
+    private Iterator $queue;
 
-    /**
-     * Running processes
-     *
-     * @var array
-     */
-    private $running = [];
+    /** @var array<Process> */
+    private array $running = [];
 
-    /**
-     * @var array
-     */
-    private $options;
+    /** @var array<string, mixed> */
+    private array $options;
 
-    /**
-     * @var int
-     */
-    private $concurrency;
+    private int $concurrency;
 
-    /**
-     * @var EventDispatcher
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * Accept any type of iterator, inclusive Generator
      *
-     * @param Process[] $queue
-     * @param array $options
+     * @param Iterator<Process> $queue
+     * @param array<string, mixed> $options
      */
     public function __construct(Iterator $queue, array $options = [])
     {
-        $this->eventDispatcher = new EventDispatcher;
+        $this->eventDispatcher = new EventDispatcher();
         $this->queue = $queue;
         $this->options = array_merge($this->getDefaultOptions(), $options);
         $this->concurrency = $this->options['concurrency'];
     }
 
-    private function getDefaultOptions()
+    /** @return array<string, mixed> */
+    private function getDefaultOptions(): array
     {
         return [
             'concurrency' => '5',
@@ -68,10 +56,8 @@ class ProcessPool
 
     /**
      * Start and wait until all processes finishes
-     *
-     * @return void
      */
-    public function wait()
+    public function wait(): void
     {
         $this->startNextProcesses();
 
@@ -108,18 +94,16 @@ class ProcessPool
         }
     }
 
-    public function onProcessFinished(callable $callback)
+    public function onProcessFinished(callable $callback): void
     {
-        $eventName = $this->options['eventPreffix'] . '.' . ProcessFinished::NAME;
+        $eventName = $this->options['eventPreffix'] . '.' . ProcessEvent::PROCESS_FINISHED;
         $this->getEventDispatcher()->addListener($eventName, $callback);
     }
 
     /**
      * Start next processes until fill the concurrency limit
-     *
-     * @return void
      */
-    private function startNextProcesses()
+    private function startNextProcesses(): void
     {
         $concurrency = $this->getConcurrency();
 
@@ -135,9 +119,9 @@ class ProcessPool
         }
     }
 
-    private function shouldThrowExceptions()
+    private function shouldThrowExceptions(): bool
     {
-        return $this->options['throwExceptions'];
+        return (bool) $this->options['throwExceptions'];
     }
 
     /**
@@ -151,36 +135,29 @@ class ProcessPool
     }
 
     /**
-     * @param int $concurrency
-     *
      * @return static
      */
-    public function setConcurrency($concurrency)
+    public function setConcurrency(int $concurrency)
     {
         $this->concurrency = $concurrency;
 
         return $this;
     }
 
-    private function dispatchEvent(ProcessEvent $event)
+    private function dispatchEvent(ProcessEvent $event): void
     {
         $eventPreffix = $this->options['eventPreffix'];
-        $eventName = $event::NAME;
+        $eventName = $event->getName();
 
-        $this->getEventDispatcher()->dispatch("$eventPreffix.$eventName", $event);
+        $this->getEventDispatcher()->dispatch($event, "$eventPreffix.$eventName");
     }
 
-    /**
-     * @return EventDispatcher
-     */
-    public function getEventDispatcher()
+    public function getEventDispatcher(): EventDispatcherInterface
     {
         return $this->eventDispatcher;
     }
 
     /**
-     * @param EventDispatcher $eventDispatcher
-     *
      * @return static
      */
     public function setEventDispatcher(EventDispatcher $eventDispatcher)

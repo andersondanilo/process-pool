@@ -2,28 +2,24 @@
 
 namespace ProcessPool\Events;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\Process\Process;
 
 abstract class ProcessEvent extends Event
 {
-    /**
-     * @var Process
-     */
-    private $process;
+    private Process $process;
 
-    /**
-     * @param Process $process
-     */
+    public const PROCESS_FINISHED = 'process_finished';
+    public const PROCESS_STARTED = 'process_started';
+
     public function __construct(Process $process)
     {
         $this->process = $process;
     }
 
-    /**
-     * @return Process
-     */
-    public function getProcess()
+    abstract public function getName(): string;
+
+    public function getProcess(): Process
     {
         return $this->process;
     }

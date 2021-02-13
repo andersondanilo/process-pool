@@ -3,8 +3,16 @@
          backupGlobals="true"
          colors="true">
   <testsuites>
-    <testsuite>
+    <testsuite name="unit tests">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+    <report>
+      <clover outputFile="clover.xml" />
+    </report>
+  </coverage>
 </phpunit>

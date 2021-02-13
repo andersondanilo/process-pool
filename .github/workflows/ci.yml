@@ -1,0 +1,25 @@
+name: CI
+
+on: [push]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php_version: ['7.4', '8.0']
+
+    env:
+      XDEBUG_MODE: coverage
+
+    steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php_version }}
+        extensions: xdebug
+        tools: composer
+    - uses: actions/checkout@v2
+    - run: composer install
+    - run: make ci

@@ -6,5 +6,8 @@ use Symfony\Component\Process\Process;
 
 class ProcessStarted extends ProcessEvent
 {
-    const NAME = 'process_started';
+    public function getName(): string
+    {
+        return static::PROCESS_STARTED;
+    }
 }
