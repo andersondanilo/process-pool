@@ -126,10 +126,8 @@ class ProcessPool
 
     /**
      * Get processes concurrency, default 5
-     *
-     * @return int
      */
-    public function getConcurrency()
+    public function getConcurrency(): int
     {
         return $this->concurrency;
     }
@@ -160,7 +158,7 @@ class ProcessPool
     /**
      * @return static
      */
-    public function setEventDispatcher(EventDispatcher $eventDispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
 
