@@ -2,6 +2,7 @@ PHP Process Pool
 ================
 
 [![Latest Version](https://img.shields.io/github/release/andersondanilo/process-pool.svg?style=flat-square)](https://github.com/andersondanilo/process-pool/releases)
+[![Total Downloads](https://poser.pugx.org/andersondanilo/process-pool/downloads)](//packagist.org/packages/andersondanilo/process-pool)
 ![CI](https://github.com/andersondanilo/process-pool/workflows/CI/badge.svg)
 
 PHP Process Pool is a simple process pool using symfony process
@@ -12,7 +13,7 @@ use Symfony\Component\Process\Process;
 
 function processGenerator($count) {
     for ($i = 0; $i < 10; $i++) {
-        yield new Process("sleep $i");
+        yield new Process(['sleep', $i]);
     }
 }
 
